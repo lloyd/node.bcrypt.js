@@ -282,6 +282,26 @@ bcrypt(const char *key, const char *salt, char *encrypted)
 	memset(cdata, 0, sizeof(cdata));
 }
 
+u_int8_t bcrypt_get_info(const char * hash, bcrypt_hash_info * bhi)
+{
+  /* parse past leading "$" */
+  if (!hash || *(hash++) != '$') return 0;
+
+  /* extract version */
+  u_int32_t i = 0;
+  bhi->version[i++] = *hash++;
+  if (*hash != '$') bhi->version[i++] = *hash++;
+  bhi->version[i] = 0;
+
+  /* skip past second '$' */
+  if (*(hash++) != '$') return 0;      
+
+  /* extract the rounds */
+  bhi->rounds = atoi(hash);
+
+  return 1;
+}
+
 static void
 encode_base64(u_int8_t *buffer, u_int8_t *data, u_int16_t len)
 {

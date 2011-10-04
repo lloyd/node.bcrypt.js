@@ -95,4 +95,11 @@ void bcrypt_gensalt(u_int8_t, u_int8_t*, char *);
 void bcrypt(const char *, const char *, char *);
 void encode_salt(char *, u_int8_t *, u_int16_t, u_int8_t);
 
+typedef struct {
+    char version[4];
+    u_int32_t rounds;
+} bcrypt_hash_info;
+u_int8_t bcrypt_get_info(const char *, bcrypt_hash_info *);
+    
+
 #endif
